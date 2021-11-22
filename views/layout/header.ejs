@@ -1,0 +1,42 @@
+<!-------- header -------->
+<div class="header">
+    <div class="header-container">
+        <div class="web-navbar">
+            <div class="logo">
+                <img src="img/logo.png" width="125px">
+            </div>
+            
+            <nav class="web-nav">
+                <ul id="MenuItems">
+                    <li><a href="/" class="web-nav-link">Home</a></li>
+                    <li><a href="/products" class="web-nav-link">Products</a></li>
+                    <li><a href="/about" class="web-nav-link">About</a></li>
+                    <li><a href="" class="web-nav-link">Contact</a></li>
+                    
+                    <li>
+                        <div class="dropdown">
+                            <a type="button" class="web-nav-link dropdown-toggle" id="dropdownMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account</a>
+
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenu">
+                                <a class="dropdown-item web-nav-link" href="/login">Login</a>
+                                <a class="dropdown-item web-nav-link" href="/register">Signup</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+            <!-- <img src="img/bag.png" width="30" height="30"> -->
+
+            <a type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <i class="fa fa-2x fa-shopping-cart position-relative">
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none" id="badge-num">
+                        0
+                    </span>
+                </i>
+            </a>
+
+            <img src="img/menu.png" class="menu-icon" onclick="menutoggle()">
+        </div>
+        
+    </div>
+</div>

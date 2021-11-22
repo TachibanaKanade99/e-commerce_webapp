@@ -1,0 +1,296 @@
+<!-------- footer -------->
+<div class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="footer-col-1">
+                <h3>Download Our App</h3>
+                <p>Download App For Android And IoS</p>
+                <div class="app-logo">
+                    <img src="img/play-store.png">
+                    <img src="img/app-store.png">
+                </div>
+            </div>
+            <div class="footer-col-2">
+                <img src="img/logo.png">
+                <p>For the shopping pleasure of our customers, we improve our service day by day and provide a comfortable experiencce</p>
+            </div>
+            <div class="footer-col-3">
+                <h3>Useful Links</h3>
+                <ul>
+                    <li>Coupons</li>
+                    <li>Blog Post</li>
+                    <li>Return Policy</li>
+                    <li>Hoin Affiliate</li>
+                </ul>
+            </div>
+            <div class="footer-col-4">
+                <h3>Follow us</h3>
+                <ul>
+                    <li>Facebook</li>
+                    <li>Twitter</li>
+                    <li>Instagram</li>
+                    <li>Youtube</li>
+                </ul>
+            </div>
+        </div>
+        
+        <hr>
+        <p class="copyright">Copyright 2021 for E-commerce</p>
+
+        <!-- back to top btn -->
+        <button onclick="backToTop()" class="btn btn-lg btn-primary btn-floating" id="back-to-top-btn">
+            <span>Top</span>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+    </div>
+</div>
+
+<!-- Bootstrap Modal -->
+<!-- Modal -->
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Cart Information</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-light table-hover table-responsive" id="cart-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Product</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Price</th>
+                            <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr class="d-none">
+                            <th scope="row">1</th>
+                            <td>Product 1</td>
+                            <td>1</td>
+                            <td>
+                                <span>price</span>
+                            </td>
+                            <td>
+                                <button id="remove-cart-item" class="btn btn-sm btn-danger pt-0">X</button>
+                            </td>
+                        </tr>
+                      </tbody>
+                </table>
+
+                <div>
+                    <span class="h4">Total Price: </span>
+                    <span id="price-value" class="h4"></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <a type="button" class="btn btn-primary">Checkout by Cash</a>
+                <a href="/checkout" type="button" class="btn btn-primary">Checkout by Momo</a>
+            </div>
+        </div>
+    </div>
+  </div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+<!-- Font Awesome Kit -->
+<script src="https://kit.fontawesome.com/1fb1fb2be8.js" crossorigin="anonymous"></script>
+
+<!-- JQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+<script>
+    var MenuItems = document.getElementById("MenuItems");
+    MenuItems.style.maxHeight = "0px";
+    
+    function menutoggle(){
+        if (MenuItems.style.maxHeight == "0px"){
+            MenuItems.style.maxHeight = "200px";
+        }
+        else {
+            MenuItems.style.maxHeight = "0px";
+        }
+    }
+
+    // make navbar fixed top when scrolling
+    window.onscroll = () => {
+        let navbarElement = document.getElementsByClassName('header')[0];
+        let backToTopElement = document.getElementById('back-to-top-btn');
+
+        if (document.documentElement.scrollTop > 60 || document.body.scrollTop > 60) {
+            // navbar:
+            navbarElement.style.padding = "0px 10px";
+            navbarElement.classList.add('fixed-top');
+
+            // back-to-top btn:
+            backToTopElement.style.display = 'block';
+        }
+        else {
+            navbarElement.style.padding = "20px 10px";
+            navbarElement.classList.remove('fixed-top');
+
+            // back-to-top btn:
+            backToTopElement.style.display = 'none';
+        }
+    }
+
+    // back-to-top:
+    backToTop = () => {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
+
+    // set active for category:
+    document.querySelectorAll('#navbar-link').forEach(item => {
+        item.addEventListener('click', (e) => {
+            e = e || window.event;
+            let target = e.target || e.srcElement;
+            // console.log(target);
+
+            // remove element had active:
+            let element = document.querySelector('.navbar-active');
+            if(element !== null){
+                element.classList.remove('navbar-active');
+            } 
+            target.classList.add('navbar-active');
+            
+        }, false);
+    });
+
+    // set cart number when page load
+    // value is taken from localStorage
+    window.onload = () => {
+        // load number of badge:
+        let badge_element = document.getElementById('badge-num');
+        let badge_num = parseInt(localStorage.getItem('badge_num'), 10);
+
+        if (!badge_num) {
+            localStorage.setItem('badge_num', 0);
+            badge_num = 0;
+        }
+
+        if (badge_num != 0) {
+            badge_element.classList.remove('d-none');
+        }
+        badge_element.innerHTML = badge_num;
+
+        // Load product info on cart modal:
+        if (localStorage.length > 1) {
+            let count = 1;
+            for (let i = 0; i < localStorage.length; i++) {
+                let key = localStorage.key(i);
+                let value = localStorage.getItem(key);
+                console.log(key, value);
+
+                if (key !== 'badge_num') {
+                    updateCartTable(count, key, value);
+                    count++;
+                }
+            }
+        }
+
+        updateRemoveItemCartListener();
+        calculateTotalPrice();
+    }
+
+    updateCartTable = (num, id, name) => {
+        // create element and add to cart table:
+        let cart_element = document.getElementById('cart-table');
+        let row = cart_element.insertRow();
+        let productID = row.insertCell(0);
+        let productName = row.insertCell(1);
+        let productQuantity = row.insertCell(2);
+        let productPrice = row.insertCell(3);
+        let closeBtn = row.insertCell(4);
+
+        // set value for each cell:
+        productID.innerHTML = num;
+        productName.innerHTML = name;
+        productQuantity.innerHTML = 1;
+        productPrice.innerHTML = 20000;
+        closeBtn.innerHTML = '<button id="remove-cart-item" class="btn btn-sm btn-danger pt-0" onclick="removeItemCart(this, ' + id + ')">X</button>';
+    }
+
+    addToCart = (productID, productName) => {
+        let badge_element = document.getElementById('badge-num');
+        let badge_num = parseInt(localStorage.getItem('badge_num'), 10);
+
+        // increase badge number and save to localStorage
+        badge_num++;
+        localStorage.setItem('badge_num', badge_num);
+        badge_element.innerHTML = badge_num;
+
+        if (badge_element.classList.contains('d-none')) {
+            badge_element.classList.remove('d-none');
+        }
+        
+        // set product into localStorage:
+        localStorage.setItem(productID, productName);
+
+        // update cart table:
+        updateCartTable(localStorage.length-1, productID, productName);
+        updateRemoveItemCartListener();
+        calculateTotalPrice();
+
+        // change the content inside button: "Added to cart"
+        let cart_btn = document.getElementsByClassName('cart-button');
+        cart_btn.innerHTML = '<span class="dot">1</span> Added to cart';
+    }
+    
+    // update listen for event of remove-item-cart button
+    updateRemoveItemCartListener = () => {
+        // remove item in cart table:
+        document.querySelectorAll('#remove-cart-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e = e || window.event;
+                let target = e.target || e.srcElement;
+                console.log(target);
+            })
+        });
+    }
+
+    removeItemCart = (element, productID) => {
+        // remove product from localStorage
+        localStorage.removeItem(productID);
+        element.parentElement.parentElement.remove();
+
+        // update badge number:
+        let badge_num = parseInt(localStorage.getItem('badge_num'), 10);
+        badge_num--;
+        localStorage.setItem('badge_num', badge_num);
+
+        let badge_element = document.getElementById('badge-num');
+        badge_element.innerHTML = badge_num;
+
+        // if badge_num == 0 set d-none
+        if (badge_num == 0) {
+            badge_element.classList.add('d-none');
+        }
+        // update total price:
+        calculateTotalPrice();
+    }
+
+    calculateTotalPrice = () => {
+        let table_element = document.getElementById('cart-table');
+        let table_rows = table_element.rows;
+        
+        if (table_rows.length > 2) {
+            let totalPrice = 0;
+            for (let i = 2; i < table_rows.length; i++) {
+                // console.log(table_rows[i].cells[3].innerHTML);
+                totalPrice += parseInt(table_rows[i].cells[3].innerHTML, 10);
+            }
+            document.getElementById('price-value').innerHTML = totalPrice + ' VND';
+        }
+        else {
+            document.getElementById('price-value').innerHTML = '0 VND';
+        }
+    }
+
+    
+</script>
