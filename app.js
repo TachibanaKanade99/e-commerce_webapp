@@ -1,8 +1,6 @@
 const express = require('express');
 const app = express();
 
-const path = require('path');
-
 // logger using morgan
 const morgan = require('morgan');
 app.use(morgan('dev'));
@@ -10,9 +8,40 @@ app.use(morgan('dev'));
 // use .env
 require('dotenv').config();
 
+// use helmet
+const helmet = require('helmet');
+
+/* currently I cannot fix the CSP for Font Awesome so I leave it here */
+
+// app.use(helmet.contentSecurityPolicy({
+//     useDefaults: true,
+//     directives: {
+//         "script-src": [
+//             "'self'", 
+//             "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js",
+//             "https://kit.fontawesome.com/1fb1fb2be8.js",
+//             "https://code.jquery.com/jquery-3.6.0.js",
+//         ],
+//         "style-src": [
+//             "'self'",
+//             "https://fonts.googleapis.com",
+//             "https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css",
+//             "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css",
+//             "https://ka-f.fontawesome.com/releases/v5.15.4/css/free.min.css?token=1fb1fb2be8",
+//         ]
+//     }
+// }));
+
+/* Disable CSP in Helmet because I cannot fix =))) Fuck it */
+app.use(
+    helmet({
+        contentSecurityPolicy: false,
+    })
+);
+
 // using middleware:
 app.use(express.urlencoded({ extended: false }));
-app.use(express.static(__dirname + '/public'));
+app.use('', express.static(__dirname + '/public'));
 app.use('/products', express.static(__dirname + '/public'));
 app.use('/products/:category/:page', express.static(__dirname + '/public'));
 
@@ -75,91 +104,6 @@ app.get('/register', (req, res) => {
 
 app.get('/about', (req, res) => {
     res.render('about');
-})
-
-app.get('/checkout', async(req, res) => {
-    //https://developers.momo.vn/#/docs/en/aiov2/?id=payment-method
-    //parameters
-    var partnerCode = "MOMO";
-    var accessKey = "F8BBA842ECF85";
-    var secretkey = "K951B6PE1waDMi640xX08PD3vg6EkVlz";
-    var requestId = partnerCode + new Date().getTime();
-    var orderId = requestId;
-    var orderInfo = "pay with MoMo";
-    var redirectUrl = "https://momo.vn/return";
-    var ipnUrl = "https://callback.url/notify";
-    // var ipnUrl = redirectUrl = "https://webhook.site/454e7b77-f177-4ece-8236-ddf1c26ba7f8";
-    var amount = "50000";
-    var requestType = "captureWallet"
-    var extraData = ""; //pass empty value if your merchant does not have stores
-
-    //before sign HMAC SHA256 with format
-    //accessKey=$accessKey&amount=$amount&extraData=$extraData&ipnUrl=$ipnUrl&orderId=$orderId&orderInfo=$orderInfo&partnerCode=$partnerCode&redirectUrl=$redirectUrl&requestId=$requestId&requestType=$requestType
-    var rawSignature = "accessKey="+accessKey+"&amount=" + amount+"&extraData=" + extraData+"&ipnUrl=" + ipnUrl+"&orderId=" + orderId+"&orderInfo=" + orderInfo+"&partnerCode=" + partnerCode +"&redirectUrl=" + redirectUrl+"&requestId=" + requestId+"&requestType=" + requestType
-    //puts raw signature
-    console.log("--------------------RAW SIGNATURE----------------")
-    console.log(rawSignature)
-    //signature
-    const crypto = require('crypto');
-    var signature = crypto.createHmac('sha256', secretkey)
-        .update(rawSignature)
-        .digest('hex');
-    console.log("--------------------SIGNATURE----------------")
-    console.log(signature)
-
-    //json object send to MoMo endpoint
-    const requestBody = JSON.stringify({
-        partnerCode : partnerCode,
-        accessKey : accessKey,
-        requestId : requestId,
-        amount : amount,
-        orderId : orderId,
-        orderInfo : orderInfo,
-        redirectUrl : redirectUrl,
-        ipnUrl : ipnUrl,
-        extraData : extraData,
-        requestType : requestType,
-        signature : signature,
-        lang: 'en'
-    });
-    //Create the HTTPS objects
-    const https = require('https');
-    const options = {
-        hostname: 'test-payment.momo.vn',
-        port: 443,
-        path: '/v2/gateway/api/create',
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Content-Length': Buffer.byteLength(requestBody)
-        }
-    }
-    //Send the request and get the response
-    let res_url = null;
-    const request = https.request(options, response => {
-        console.log(`Status: ${response.statusCode}`);
-        console.log(`Headers: ${JSON.stringify(response.headers)}`);
-        response.setEncoding('utf8');
-        response.on('data', (body) => {
-            console.log('Body: ');
-            console.log(body);
-            console.log('payUrl: ');
-            res_url = JSON.parse(body).payUrl;
-            console.log(res_url);
-        });
-        response.on('end', () => {
-            console.log('No more data in response.');
-            res.redirect(res_url);
-        });
-    })
-
-    request.on('error', (e) => {
-        console.log(`problem with request: ${e.message}`);
-    });
-    // write data to request body
-    console.log("Sending....")
-    request.write(requestBody);
-    request.end();
 })
 
 app.listen(process.env.PORT, () => {
