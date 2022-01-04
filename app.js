@@ -1,4 +1,5 @@
 const express = require('express');
+const session = require('express-session');
 const app = express();
 
 // logger using morgan
@@ -10,6 +11,9 @@ require('dotenv').config();
 
 // use helmet
 const helmet = require('helmet');
+
+// passport:
+const passport = require('passport');
 
 /* currently I cannot fix the CSP for Font Awesome so I leave it here */
 
@@ -40,15 +44,26 @@ app.use(
 );
 
 // using middleware:
+app.use(session({ 
+    secret: "cats",
+    resave: false,
+    saveUninitialized: false
+}));
 app.use(express.urlencoded({ extended: false }));
 app.use('', express.static(__dirname + '/public'));
 app.use('/products', express.static(__dirname + '/public'));
 app.use('/products/:category/:page', express.static(__dirname + '/public'));
 
+app.use(passport.initialize());
+app.use(passport.session());
+
 // include custom modules:
 
-// product page:
+// products page:
 const products = require('./libs/products');
+
+// users page:
+const users = require('./libs/users');
 
 // set view engine to ejs:
 app.set('view engine', 'ejs');
@@ -95,12 +110,98 @@ app.get('/products', (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-    res.render('login');
+    let message = '';
+    if (req.query.message) {
+        message = req.query.message;
+    }
+    res.render('login', {
+        message: message
+    });
 });
 
-app.get('/register', (req, res) => {
-    res.render('register'); 
+const LocalStrategy = require('passport-local');
+passport.use(new LocalStrategy({
+        usernameField: 'email',
+        passwordField: 'password'
+    }, 
+    async function verify(username, password, cb) {
+        console.log('hello world');
+        const connection = require('./helpers/createDBConnection');
+        const mysql = require('mysql');
+        const bcrypt = require('bcrypt');
+        
+        const conn = await connection.connect();
+        
+        
+        let user = await new Promise((resolve, reject) => {
+            let cmd = 'SELECT first_name, last_name, email, encrypted_password FROM users WHERE email = ?';
+            let params = [username];
+            let query = mysql.format(cmd, params);
+
+            conn.query(query, (err, res) => {
+                if (err) {
+                    // console.log(err);
+                    return cb(null, false, { message: 'Incorrect email or password' });
+                }
+                else {
+                    return resolve(res[0]);
+                }
+            })
+        })
+        console.log(user);
+
+        // check if user's password matched
+        console.log(password, user.encrypted_password);
+        const match = await bcrypt.compare(password, user.encrypted_password);
+        if (match) {
+            return cb(null, user);
+        }
+        else {
+            return cb(null, false, { message: 'Incorrect email or password' });
+        }
+        
+    }
+))
+
+passport.serializeUser(function(user, done) {
+    done(null, user);
 });
+  
+passport.deserializeUser(function(user, done) {
+    done(null, user);
+});
+
+app.post(
+    '/login',
+    passport.authenticate('local', { failureRedirect: '/login', failureMessage: true }),
+    (req, res) => {
+        res.redirect('/');
+    } 
+)
+
+app.get('/register', (req, res) => {
+    let message = '';
+    if (req.query.message) {
+        message = req.query.message;
+    }
+    res.render('register', {
+        message: message
+    }); 
+});
+
+app.post('/register', async(req, res) => {
+    let first_name = req.body.first_name;
+    let last_name = req.body.last_name;
+    let email = req.body.email;
+    let password = req.body.password[0];
+    console.log(req.body);
+    
+    let register = await users.register(first_name, last_name, email, password);
+    if (register) {
+        let str = encodeURIComponent('Register successfully! Please login to your account');
+        res.redirect('/login?message=' + str);
+    }
+})
 
 app.get('/about', (req, res) => {
     res.render('about');

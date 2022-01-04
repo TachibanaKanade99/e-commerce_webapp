@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content"width=device-width, initial-scale=1.0"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <title> JustShop Website - Login</title>
     <%- include('layout/css_links.ejs') %>
 </head>
@@ -12,12 +12,12 @@
 
     <div style="height: 100vh;">
 		<div class="text-center login-contents">
-			<p class="font-weight-bold text-danger">Login Notification</p>
+			<p class="font-weight-bold text-danger"> <%= message %> </p>
 		</div>
 	
 		<div class="row mt-1 px-0 mb-5">
 			<div class="col-2 col-md-4 px-0"></div>
-			<form class="col-8 col-md-4 bg-light p-3">
+			<form class="col-8 col-md-4 bg-light p-3" action="/login" method="post">
 				
 				<div class="form-group">
 					<label class="my-1">Email</label>

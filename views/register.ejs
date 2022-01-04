@@ -12,19 +12,18 @@
 
 	<div style="height: 120vh;">
 		<div class="text-center login-contents">
-			<p class="font-weight-bold text-danger">Register Notification</p>
+			<p class="font-weight-bold text-danger"> <%= message %> </p>
 		</div>
 	
 		<div class="row mt-1 px-0 mb-5">
 			<div class="col-2 col-md-4 px-0"></div>
-			<form class="col-8 col-md-4 bg-light p-3">
+			<form class="col-8 col-md-4 bg-light p-3" action="/register" method="post">
 
 				<div class="form-group">
 					<label class="my-1">First name</label>
 					<input 
 						type="text"
-						name="first-name"
-						value=""
+						name="first_name"
 						class="form-control" 
 						placeholder="Enter first name" 
 						required
@@ -35,8 +34,7 @@
 					<label class="my-1">Last name</label>
 					<input 
 						type="text"
-						name="last-name"
-						value=""
+						name="last_name"
 						class="form-control" 
 						placeholder="Enter last name" 
 						required
@@ -48,7 +46,6 @@
 					<input 
 						type="text"
 						name="email"
-						value=""
 						class="form-control" 
 						placeholder="Enter email" 
 						required
@@ -61,7 +58,6 @@
 						<input 
 							type="password"
 							name="password"
-							value=""
 							class="form-control" 
 							placeholder="Enter password" 
 							required
@@ -78,7 +74,6 @@
 						<input 
 							type="password"
 							name="password"
-							value=""
 							class="form-control" 
 							placeholder="Enter password" 
 							required
