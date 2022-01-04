@@ -99,7 +99,7 @@ app.get('/login', (req, res) => {
 });
 
 app.get('/register', (req, res) => {
-    res.render('/register'); 
+    res.render('register'); 
 });
 
 app.get('/about', (req, res) => {

@@ -15,7 +15,7 @@ window.onscroll = () => {
     let navbarElement = document.getElementsByClassName('header')[0];
     let backToTopElement = document.getElementById('back-to-top-btn');
 
-    if (document.documentElement.scrollTop > 60 || document.body.scrollTop > 60) {
+    if (document.documentElement.scrollTop > 50 || document.body.scrollTop > 50) {
         // navbar:
         navbarElement.style.padding = "0px 10px";
         navbarElement.classList.add('fixed-top');
@@ -24,7 +24,7 @@ window.onscroll = () => {
         backToTopElement.style.display = 'block';
     }
     else {
-        navbarElement.style.padding = "20px 10px";
+        navbarElement.style.padding = "10px 10px";
         navbarElement.classList.remove('fixed-top');
 
         // back-to-top btn:
@@ -247,3 +247,20 @@ initPayPalButton = () => {
     }).render('#paypal-button-container');
 }
 initPayPalButton();
+
+// Login
+toggleVisibility = (ele) => {
+    // console.log($(ele).children("i"));
+    if ($(ele).children("i").hasClass("fa-eye")) {
+        $(ele).children("i").removeClass("fa-eye");
+        $(ele).children("i").addClass("fa-eye-slash");
+        // $("input[name='password']").attr("type", "text");
+        $(ele).parent().find("input[name='password']").attr("type", "text");
+    }
+    else {
+        $(ele).children("i").removeClass("fa-eye-slash");
+        $(ele).children("i").addClass("fa-eye");
+        // $("input[name='password']").attr("type", "password");
+        $(ele).parent().find("input[name='password']").attr("type", "password");
+    }
+}

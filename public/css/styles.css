@@ -1,10 +1,14 @@
 * {
-	margin: 0;
-	padding: 0;
+	/* margin: 0;
+	padding: 0; */
 	box-sizing: border-box;
 }
 body {
 	font-family: 'Poppins', sans-serif;
+}
+
+label {
+	font-weight: 500;
 }
 
 #back-to-top-btn {
@@ -196,7 +200,6 @@ nav.web-nav ul li a {
 	margin: 20 auto 80px;
 	position: relative;
 	line-height: 60px;
-	color: #55;
 }
 .title:after{
 	content: '';
@@ -309,7 +312,7 @@ ul{
 		top: 70.px;
 		left: 0;
 		background: #333;
-		width: 100p%;
+		/* width: 100%; */
 		overflow: hidden;
 		transition: max-height 0.5s;
 	}
@@ -335,6 +338,10 @@ ul{
 	.col-2, .col-3, .col-4{
 		flex-basis: 100%;
 	}
+}
+
+.login-contents {
+	margin-top: 70px;
 }
 
 
