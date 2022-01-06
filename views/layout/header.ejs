@@ -17,10 +17,22 @@
                         <div class="dropdown">
                             <a type="button" class="web-nav-link dropdown-toggle" id="dropdownMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account</a>
 
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenu">
-                                <a class="dropdown-item web-nav-link" href="/login">Login</a>
-                                <a class="dropdown-item web-nav-link" href="/register">Signup</a>
-                            </div>
+                            <!-- <% console.log(currentUser); %> -->
+                            <% if (currentUser) { %>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenu">
+                                    <a class="dropdown-item web-nav-link" href=""> <%= currentUser.first_name + " " + currentUser.last_name %> </a>
+                                    <form action="/logout" method="post">
+                                        <input type="hidden" name="param1" value="val" />
+                                        <input type="hidden" name="param2" value="val2" />
+                                        <button type="submit" class="dropdown-item web-nav-link">Logout</button>
+                                    </form>
+                                </div>
+                            <% } else { %>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenu">
+                                    <a class="dropdown-item web-nav-link" href="/login">Login</a>
+                                    <a class="dropdown-item web-nav-link" href="/register">Signup</a>
+                                </div>
+                            <% } %> 
                         </div>
                     </li>
                 </ul>

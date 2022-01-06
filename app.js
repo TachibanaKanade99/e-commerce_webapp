@@ -57,6 +57,12 @@ app.use('/products/:category/:page', express.static(__dirname + '/public'));
 app.use(passport.initialize());
 app.use(passport.session());
 
+// get current user
+app.use((req, res, next) => {
+    res.locals.currentUser = req.user;
+    next();
+})
+
 // include custom modules:
 
 // products page:
@@ -69,10 +75,12 @@ const users = require('./libs/users');
 app.set('view engine', 'ejs');
 
 
+// Homepage:
 app.get('/', (req, res) => {
     res.render('home');
 });
 
+// Product page:
 app.get('/products/:category/:page', async (req, res) => {
     console.log('hello from product page');
 
@@ -91,6 +99,7 @@ app.get('/products/:category/:page', async (req, res) => {
     });
 });
 
+// Product detail page:
 app.get('/products/:category/:page/:productID', async(req, res) => {
     console.log('hello from product detail page');
 
@@ -109,6 +118,12 @@ app.get('/products', (req, res) => {
     res.redirect('/products/all/1');
 });
 
+// User page:
+app.get('/user', (req, res) => {
+    res.render('user');
+})
+
+// Login page:
 app.get('/login', (req, res) => {
     let message = '';
     if (req.query.message) {
@@ -179,6 +194,7 @@ app.post(
     } 
 )
 
+// Register page:
 app.get('/register', (req, res) => {
     let message = '';
     if (req.query.message) {
@@ -201,6 +217,12 @@ app.post('/register', async(req, res) => {
         let str = encodeURIComponent('Register successfully! Please login to your account');
         res.redirect('/login?message=' + str);
     }
+})
+
+// Logout:
+app.post('/logout', async(req, res) => {
+    req.logout();
+    res.redirect('/');
 })
 
 app.get('/about', (req, res) => {
