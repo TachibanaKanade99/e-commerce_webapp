@@ -95,7 +95,7 @@ app.get('/products/:category/:page', async (req, res) => {
         categories: categories,
         products: products_result.data,
         pages: Math.floor(products_result.counts / productsPerPage),
-        currentPage: page
+        currentPage: parseInt(page)
     });
 });
 
@@ -120,7 +120,14 @@ app.get('/products', (req, res) => {
 
 // User page:
 app.get('/user', (req, res) => {
-    res.render('user');
+    if (req.user) {
+        console.log('Hello from user page')
+        res.render('user');
+    }
+    else {
+        let message = encodeURIComponent('Please login first!');
+        res.redirect('/login?message=' + message);
+    }
 })
 
 // Login page:
@@ -129,9 +136,14 @@ app.get('/login', (req, res) => {
     if (req.query.message) {
         message = req.query.message;
     }
-    res.render('login', {
-        message: message
-    });
+    if (!req.user) {
+        res.render('login', {
+            message: message
+        });
+    }
+    else {
+        res.redirect('back');
+    }
 });
 
 const LocalStrategy = require('passport-local');
@@ -140,14 +152,12 @@ passport.use(new LocalStrategy({
         passwordField: 'password'
     }, 
     async function verify(username, password, cb) {
-        console.log('hello world');
+        // console.log('hello world');
         const connection = require('./helpers/createDBConnection');
         const mysql = require('mysql');
         const bcrypt = require('bcrypt');
         
         const conn = await connection.connect();
-        
-        
         let user = await new Promise((resolve, reject) => {
             let cmd = 'SELECT first_name, last_name, email, encrypted_password FROM users WHERE email = ?';
             let params = [username];
@@ -163,10 +173,10 @@ passport.use(new LocalStrategy({
                 }
             })
         })
-        console.log(user);
+        // console.log(user);
 
         // check if user's password matched
-        console.log(password, user.encrypted_password);
+        // console.log(password, user.encrypted_password);
         const match = await bcrypt.compare(password, user.encrypted_password);
         if (match) {
             return cb(null, user);
@@ -190,7 +200,8 @@ app.post(
     '/login',
     passport.authenticate('local', { failureRedirect: '/login', failureMessage: true }),
     (req, res) => {
-        res.redirect('/');
+        // res.redirect('/');
+        res.redirect('back');
     } 
 )
 
@@ -200,9 +211,14 @@ app.get('/register', (req, res) => {
     if (req.query.message) {
         message = req.query.message;
     }
-    res.render('register', {
-        message: message
-    }); 
+    if (!req.user) {
+        res.render('register', {
+            message: message
+        });
+    }
+    else {
+        res.redirect('back');
+    }
 });
 
 app.post('/register', async(req, res) => {
@@ -210,7 +226,7 @@ app.post('/register', async(req, res) => {
     let last_name = req.body.last_name;
     let email = req.body.email;
     let password = req.body.password[0];
-    console.log(req.body);
+    // console.log(req.body);
     
     let register = await users.register(first_name, last_name, email, password);
     if (register) {
@@ -232,3 +248,9 @@ app.get('/about', (req, res) => {
 app.listen(process.env.PORT, () => {
     console.log('Server is listening on port ' + process.env.PORT);
 });
+
+process.on('SIGINT', function() {
+    console.log( "\nGracefully shutting down from SIGINT (Ctrl-C)" );
+    // some other closing procedures go here
+    process.exit(0);
+  });
