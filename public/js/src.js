@@ -1,14 +1,14 @@
-var MenuItems = document.getElementById("MenuItems");
-MenuItems.style.maxHeight = "0px";
+// var MenuItems = document.getElementById("MenuItems");
+// MenuItems.style.maxHeight = "0px";
 
-function menutoggle(){
-    if (MenuItems.style.maxHeight == "0px"){
-        MenuItems.style.maxHeight = "200px";
-    }
-    else {
-        MenuItems.style.maxHeight = "0px";
-    }
-}
+// function menutoggle(){
+//     if (MenuItems.style.maxHeight == "0px"){
+//         MenuItems.style.maxHeight = "200px";
+//     }
+//     else {
+//         MenuItems.style.maxHeight = "0px";
+//     }
+// }
 
 // make navbar fixed top when scrolling
 window.onscroll = () => {
@@ -17,14 +17,14 @@ window.onscroll = () => {
 
     if (document.documentElement.scrollTop > 50 || document.body.scrollTop > 50) {
         // navbar:
-        navbarElement.style.padding = "0px 10px";
+        navbarElement.style.padding = "0px 0px 0px 0px";
         navbarElement.classList.add('fixed-top');
 
         // back-to-top btn:
         backToTopElement.style.display = 'block';
     }
     else {
-        navbarElement.style.padding = "10px 10px";
+        navbarElement.style.padding = "0px 0px 0px 0px";   
         navbarElement.classList.remove('fixed-top');
 
         // back-to-top btn:
@@ -103,6 +103,8 @@ updateCartTable = (num, id, name, quantity, price) => {
 }
 
 addToCart = (productName, productPrice) => {
+    
+
     let badge_element = document.getElementById('badge-num');
     let badge_num = parseInt(localStorage.getItem('badge_num'), 10);
 

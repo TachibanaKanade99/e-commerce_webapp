@@ -31,10 +31,10 @@ label {
 }
 
 .web-navbar {
-	display: flex;
-	transition: 0.4s;
+	/* display: flex; */
+	/* transition: 0.4s; */
 	align-items: center;
-	padding: 20px;
+	padding: 10px;
 }
 .web-nav {
 	flex: 1;
@@ -58,19 +58,19 @@ nav.web-nav ul li a {
 	font-weight: bold !important;
 	font-size: 16px;
 	text-decoration: none;
-	color: #555;
+	color: black !important;
 }
 .web-nav-link:hover {
 	font-weight: bold !important;
 	text-decoration: none;
-	color: grey;
+	color: grey !important;
 }
 .price-font {
 	color: #555;
 }
 
 .product-name {
-	font-size: 20px;
+	font-size: 16px;
 	color: #000;
 	font-weight: 500;
 }
@@ -156,6 +156,10 @@ nav.web-nav ul li a {
 }
 
 /* Vertical Navbar */
+.vertical-navbar {
+	padding-left: 0px;
+}
+
 .vertical-navbar li a {
 	color: black;
 	display: block;
@@ -175,6 +179,7 @@ nav.web-nav ul li a {
 /* Barge */
 .badge {
 	font-size: 16px !important;
+	transition: transform .3s ease-out;
 }
 
 .logo img{
@@ -218,15 +223,11 @@ h4{
 	color: #555;
 	font-weight: normal;
 }
-.col-4 p{
-	font-size: 14px;
-}
+
 .rating .fa{
 	color: #ff704d;
 }
-.col-4:hover{
-	transform: translateY(-5px);
-}
+
 .offer {
 	background: radial-gradient(#fff, #ff704d);
 	padding: 30px 0;
@@ -308,13 +309,13 @@ ul{
 	width: 28px;
 	margin-left: 20px;
 }
-@media only screen and (max-width: 800px){
+/* @media only screen and (max-width: 800px){
 	nav ul {
 		position: absolute;
 		top: 70.px;
 		left: 0;
 		background: #333;
-		/* width: 100%; */
+		width: 100%;
 		overflow: hidden;
 		transition: max-height 0.5s;
 	}
@@ -331,16 +332,16 @@ ul{
 		display: block;
 		cursor: pointer;
 	}
-}
+} */
 
-@media only screen and (max-width: 600px){
+/* @media only screen and (max-width: 600px){
 	.row {
 		text-align: center;
 	}
 	.col-2, .col-3, .col-4{
 		flex-basis: 100%;
 	}
-}
+} */
 
 .login-contents {
 	margin-top: 70px;

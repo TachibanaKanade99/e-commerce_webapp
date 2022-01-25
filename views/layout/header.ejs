@@ -2,53 +2,65 @@
 <div class="header">
     <div class="header-container">
         <div class="web-navbar">
-            <div class="logo">
-                <img src="img/logo.png" width="125px">
-            </div>
-            
-            <nav class="web-nav">
-                <ul id="MenuItems">
-                    <li><a href="/" class="web-nav-link">Home</a></li>
-                    <li><a href="/products" class="web-nav-link">Products</a></li>
-                    <li><a href="/about" class="web-nav-link">About</a></li>
-                    <li><a href="" class="web-nav-link">Contact</a></li>
-                    
-                    <li>
-                        <div class="dropdown">
-                            <a type="button" class="web-nav-link dropdown-toggle" id="dropdownMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account</a>
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <a class="logo nav-brand">
+                    <img src="img/logo.png" width="125px">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a href="/" class="nav-link web-nav-link">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/products" class="nav-link web-nav-link">Products</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/about" class="nav-link web-nav-link">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="" class="nav-link web-nav-link">Contact</a>
+                        </li>
 
-                            <!-- <% console.log(currentUser); %> -->
-                            <% if (currentUser) { %>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenu">
-                                    <a class="dropdown-item web-nav-link" href=""> <%= currentUser.first_name + " " + currentUser.last_name %> </a>
-                                    <form action="/logout" method="post">
-                                        <input type="hidden" name="param1" value="val" />
-                                        <input type="hidden" name="param2" value="val2" />
-                                        <button type="submit" class="dropdown-item web-nav-link">Logout</button>
-                                    </form>
-                                </div>
-                            <% } else { %>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenu">
-                                    <a class="dropdown-item web-nav-link" href="/login">Login</a>
-                                    <a class="dropdown-item web-nav-link" href="/register">Signup</a>
-                                </div>
-                            <% } %> 
-                        </div>
-                    </li>
-                </ul>
-            </nav>
-            <!-- <img src="img/bag.png" width="30" height="30"> -->
+                        <li class="nav-item dropdown">
+                            <div class="dropdown">
+                                <a type="button" class="nav-link web-nav-link dropdown-toggle" id="dropdownMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account</a>
 
-            <a type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                <i class="fa fa-2x fa-shopping-cart position-relative">
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none" id="badge-num">
-                        0
-                    </span>
-                </i>
-            </a>
+                                <!-- <% console.log(currentUser); %> -->
+                                <% if (currentUser) { %>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenu">
+                                        <a class="dropdown-item web-nav-link" href="/user"> <%= currentUser.first_name + " " + currentUser.last_name %> </a>
+                                        <form action="/logout" method="post">
+                                            <input type="hidden" name="param1" value="val" />
+                                            <input type="hidden" name="param2" value="val2" />
+                                            <button type="submit" class="dropdown-item web-nav-link">Logout</button>
+                                        </form>
+                                    </div>
+                                <% } else { %>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenu">
+                                        <a class="dropdown-item web-nav-link" href="/login">Login</a>
+                                        <a class="dropdown-item web-nav-link" href="/register">Signup</a>
+                                    </div>
+                                <% } %> 
+                            </div>
+                        </li>
 
-            <img src="img/menu.png" class="menu-icon" onclick="menutoggle()">
+                        <li class="nav-item">
+                            <a type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                <i class="fa fa-2x fa-shopping-cart position-relative">
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none" id="badge-num">
+                                        0
+                                    </span>
+                                </i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+              </nav>
+
+            <!-- <img src="img/menu.png" class="menu-icon" onclick="menutoggle()"> -->
         </div>
-        
     </div>
 </div>

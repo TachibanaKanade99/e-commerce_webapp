@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User</title>
+
+    <%- include('layout/css_links.ejs') %>
+</head>
+<body>
+    <%- include('layout/header.ejs') %>
+
+    <div class="container mt-5" style="height: 100vh;">
+        <span style="font-size: 1.5rem">Welcome</span>
+        <span class="h4 font-weight-bold"><%= currentUser.first_name + ' ' + currentUser.last_name %>!</span>
+        <p></p>
+        <div class="row mt-2">
+            <div class="col-4 col-md-4 text-center">
+                <img style="width: 300px; height: 300px;" src="img/user.png" alt="customer-account-image">
+                <p class="h4"> <%= currentUser.first_name + ' ' + currentUser.last_name %> </p>
+                <p> <%= currentUser.email %> </p>
+                <a type="button" class="btn btn-success">Edit info</a>
+            </div>
+
+            <div class="col-6 col-md-6">
+                <span class="h4">Transaction History</span>
+            </div>
+        </div>
+    </div>
+
+    <%- include('layout/footer.ejs') %>
+</body>
+</html>

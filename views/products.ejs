@@ -19,8 +19,8 @@
 		<small> <%= pages %> </small>
 
 		<div class="row">
-			<div class="col-3 col-md-3">
-				<p class="h3 py-2 mt-5">Categories</p>
+			<div class="col-12 col-md-3">
+				<p class="h4 py-2 mt-5">Categories</p>
 				<ul class="vertical-navbar bg-white">
 					<li>
 						<% var all_class_name = null; %>
@@ -49,12 +49,12 @@
 					<% } %>
 				</ul>
 			</div>
-			<div class="col-8 col-md-8">
-				<h2 class="title">Products</h2>
+			<div class="col-12 col-md-8">
+				<h4 class="title">Products</h4>
 
 				<div class="row mb-5">
 					<% for (let i = 0; i < products.length; i++) { %>
-						<div class="col-3 justify-content-center my-5">
+						<div class="col-6 col-md-3 justify-content-center my-5">
 							<a class="product-link" href= <%="/products/" + currentCategory + "/" + currentPage + "/" + products[i].id %> >
 								<img class="col-9" src= <%= products[i].image_url %> >
 								<div class="product-name font-weight-bold"> <%= products[i].product_name %> </div>
@@ -84,11 +84,17 @@
 
 				<% if (currentPage == 1) { %>
 					<li class="page-item disabled">
-						<a class="page-link">Previous</a>
+						<!-- <a class="page-link">Previous</a> -->
+						<a class="page-link" aria-label="Previous">
+							<span aria-hidden="true">&laquo;</span>
+						</a>
 					</li>
 				<% } else { %>
 					<li class="page-item">
-						<a class="page-link" href= <%="/products/" + currentCategory + "/" + (currentPage-1) %> >Previous</a>
+						<!-- <a class="page-link" href= <%="/products/" + currentCategory + "/" + parseInt(currentPage-1) %> >Previous</a> -->
+						<a class="page-link" aria-label="Previous" href= <%="/products/" + currentCategory + "/" + parseInt(currentPage-1) %> >
+							<span aria-hidden="true">&laquo;</span>
+						</a>
 					</li>
 				<% } %>
 
@@ -119,7 +125,10 @@
 				<% } %>
 
 				<li class="page-item">
-					<a class="page-link" href= <%= "/products/" + currentCategory + "/" + (currentPage+1) %> >Next</a>
+					<!-- <a class="page-link" href= <%= "/products/" + currentCategory + "/" + parseInt(currentPage+1) %> >Next</a> -->
+					<a class="page-link" aria-label="Next" href= <%= "/products/" + currentCategory + "/" + parseInt(currentPage+1) %> >
+						<span aria-hidden="true">&raquo;</span>
+					</a>
 				</li>
 				<li class="page-item">
 					<a class="page-link" href= <%= "/products/" + currentCategory + "/" + pages %> >Last</a>
