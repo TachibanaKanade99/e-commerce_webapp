@@ -76,7 +76,7 @@ async function getProductsByCategory(product_category, page, productsPerPage) {
         })
     });
 
-    return {
+    return {    
         data: data,
         counts: counts[0].productsCount
     }
