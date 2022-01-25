@@ -1,5 +1,7 @@
 # folders
 node_modules/
+win_node_modules/
+db/
 
 # files
 .env
