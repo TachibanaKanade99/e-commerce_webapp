@@ -17,15 +17,15 @@ window.onscroll = () => {
 
     if (document.documentElement.scrollTop > 50 || document.body.scrollTop > 50) {
         // navbar:
-        navbarElement.style.padding = "0px 0px 0px 0px";
-        navbarElement.classList.add('fixed-top');
+        // navbarElement.style.padding = "0px 0px 0px 0px";
+        // navbarElement.classList.add('fixed-top');
 
         // back-to-top btn:
         backToTopElement.style.display = 'block';
     }
     else {
-        navbarElement.style.padding = "0px 0px 0px 0px";   
-        navbarElement.classList.remove('fixed-top');
+        // navbarElement.style.padding = "0px 0px 0px 0px";   
+        // navbarElement.classList.remove('fixed-top');
 
         // back-to-top btn:
         backToTopElement.style.display = 'none';
@@ -74,7 +74,7 @@ window.onload = () => {
 
     // Load product info on cart modal:
     let products = JSON.parse(localStorage.getItem('products'));
-    if (products !== undefined) {
+    if (products) {
         for (let i = 0; i < products.length; i++) {
             updateCartTable(i+1, products[i].id, products[i].name, products[i].quantity, products[i].price);
         }
@@ -264,5 +264,49 @@ toggleVisibility = (ele) => {
         $(ele).children("i").addClass("fa-eye");
         // $("input[name='password']").attr("type", "password");
         $(ele).parent().find("input[name='password']").attr("type", "password");
+    }
+}
+
+// Star rating
+let stars = Array.from(document.querySelectorAll('.rating li.star > i'));
+let isClick = false;
+stars.forEach(item => {
+    item.addEventListener('mouseover', handleHoverStar);
+    item.addEventListener('mouseout', handleHoverOutStar);
+    item.addEventListener('click', handleClickStar);
+});
+
+function handleHoverStar(e) {
+    i = stars.indexOf(e.target);
+    if (e.target.classList.contains('fa-star-o')) {
+        for (i; i >= 0; i--) {
+            stars[i].classList.remove('fa-star-o');
+            stars[i].classList.add('fa-star');
+        }    
+    }
+    // else {
+    //     for (i; i <= stars.length; i++) {
+    //         stars[i].classList.remove('fa-star');
+    //         stars[i].classList.add('fa-star-o');
+    //     }
+    // }
+}
+
+function handleHoverOutStar(e) {
+    i = stars.indexOf(e.target);
+    if (e.target.classList.contains('fa-star') && isClick == false) {
+        for (i; i >= 0; i--) {
+            stars[i].classList.remove('fa-star');
+            stars[i].classList.add('fa-star-o');
+        }    
+    }
+}
+
+function handleClickStar(e) {
+    isClick = true;
+    i = stars.indexOf(e.target);
+    for (i; i >= 0; i--) {
+        stars[i].classList.remove('fa-star-o');
+        stars[i].classList.add('fa-star');
     }
 }
