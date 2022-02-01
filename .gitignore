@@ -1,7 +1,10 @@
 # folders
 node_modules/
 win_node_modules/
+linux_node_modules/
+
 db/
+rating/
 
 # files
 .env
