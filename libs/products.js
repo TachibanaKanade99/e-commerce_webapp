@@ -3,8 +3,8 @@ const mysql = require('mysql');
 
 async function getProductsByCategory(product_category, page, productsPerPage) {
     console.log('Hello from getProduct function');
-    const conn = await connection.connect();
 
+    const conn = await connection.connect();
     // 1: 1->6 6 * 1 - 6
     // 2: 7->12 6 * 2 - 6
 
@@ -33,11 +33,11 @@ async function getProductsByCategory(product_category, page, productsPerPage) {
     let skipRows = (productsPerPage * page) - productsPerPage;
 
     if (category != 'all') {
-        product_sql = 'SELECT barcode_data.id, barcode_data.product_name, barcode_data.image_url FROM barcode_data INNER JOIN categories ON barcode_data.category_id=categories.id AND categories.name = ? LIMIT ? OFFSET ?;';
+        product_sql = 'SELECT barcode_data.id, barcode_data.product_name, barcode_data.image_url, barcode_data.average_rating FROM barcode_data INNER JOIN categories ON barcode_data.category_id=categories.id AND categories.name = ? LIMIT ? OFFSET ?;';
         product_query_params = [category, productsPerPage, skipRows];
     }
     else {
-        product_sql = 'SELECT id, product_name, image_url FROM barcode_data LIMIT ? OFFSET ?;';
+        product_sql = 'SELECT id, product_name, image_url, average_rating FROM barcode_data LIMIT ? OFFSET ?;';
         product_query_params = [productsPerPage, skipRows];
     }
 
@@ -87,12 +87,12 @@ async function getProductByProductID(productID) {
 
     const conn = await connection.connect();
     const product = await new Promise((resolve, reject) => {
-        let sql = 'SELECT id, product_name, brand, made_in, image_url FROM barcode_data WHERE id = ?';
+        let sql = 'SELECT id, product_name, brand, made_in, image_url, description, average_rating FROM barcode_data WHERE id = ?';
         let query_params = [productID];
-        let query = mysql.format(sql, query_params);
-        console.log(query);
+        let sql_query = mysql.format(sql, query_params);
+        // console.log(sql_query);
 
-        conn.query(query, (err, res) => {
+        conn.query(sql_query, (err, res) => {
             if (err) {
                 return reject(err);
             }
@@ -103,7 +103,6 @@ async function getProductByProductID(productID) {
     });
 
     product[0].product_name = product[0].product_name.trim();
-
     return product[0];
 }
 
@@ -112,9 +111,9 @@ async function getCategories() {
 
     const conn = await connection.connect();
     const categories = await new Promise((resolve, reject) => {
-        let query = 'SELECT id, name FROM categories;'
+        let sql = 'SELECT id, name FROM categories;'
         
-        conn.query(query, (err, res) => {
+        conn.query(sql, (err, res) => {
             if (err) {
                 return reject(err);
             }
@@ -126,6 +125,25 @@ async function getCategories() {
     return categories;
 }
 
+async function updateAverageRating(averageRating, productID) {
+    console.log('Hello from updateAverageRating function');
+
+    const conn = await connection.connect();
+    const updateRating = await new Promise((resolve, reject) => {
+        let sql = 'UPDATE barcode_data SET average_rating = ? WHERE id = ?';
+        let params = [averageRating, productID];
+        let sql_query = mysql.format(sql, params);
+        // console.log(sql_query);
+        
+        conn.query(sql_query, (err, res) => {
+            if (err) return reject(err);
+            else return resolve(res);
+        })
+    });
+    return updateRating;
+}
+
 module.exports.getProductsByCategory = getProductsByCategory;
 module.exports.getProductByProductID = getProductByProductID;
 module.exports.getCategories = getCategories;
+module.exports.updateAverageRating = updateAverageRating;

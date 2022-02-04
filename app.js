@@ -99,6 +99,10 @@ app.get('/products/:category/:page', async (req, res) => {
     });
 });
 
+app.get('/products', (req, res) => {
+    res.redirect('/products/all/1');
+});
+
 // Product detail page:
 app.get('/products/:category/:page/:productID', async(req, res) => {
     console.log('hello from product detail page');
@@ -114,8 +118,16 @@ app.get('/products/:category/:page/:productID', async(req, res) => {
     });
 });
 
-app.get('/products', (req, res) => {
-    res.redirect('/products/all/1');
+// Post rating for product:
+app.post('/rating', async(req, res) => {
+    let userId = req.query.userId;
+    let productId = req.query.productId;
+    let rating = req.query.rating;
+    // console.log("userId: " + userId + " productId: " + productId + " rating: " + rating);
+    let updateRating = await users.postRating(userId, productId, rating);
+    res.json({
+        updateRating: updateRating
+    });
 });
 
 // User page:
@@ -159,7 +171,7 @@ passport.use(new LocalStrategy({
         
         const conn = await connection.connect();
         let user = await new Promise((resolve, reject) => {
-            let cmd = 'SELECT first_name, last_name, email, encrypted_password FROM users WHERE email = ?';
+            let cmd = 'SELECT id, first_name, last_name, email, encrypted_password, is_admin FROM users WHERE email = ?';
             let params = [username];
             let query = mysql.format(cmd, params);
 
