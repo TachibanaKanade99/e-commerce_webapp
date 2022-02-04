@@ -14,8 +14,22 @@
 window.onscroll = () => {
     let navbarElement = document.getElementsByClassName('header')[0];
     let backToTopElement = document.getElementById('back-to-top-btn');
+    // let categoryElement = document.getElementsByClassName('fixed-category-tab');
+    // let additionColElement = document.getElementsByClassName('addition-col');
 
-    if (document.documentElement.scrollTop > 50 || document.body.scrollTop > 50) {
+    // if (categoryElement) {
+    //     if (document.documentElement.scrollTop > 645 || document.body.scrollTop > 645) {
+    //         console.log(categoryElement[0]);
+    //         categoryElement[0].style.position = 'static';
+    //         additionColElement[0].style.display = 'none';
+    //     }
+    //     else {
+    //         categoryElement[0].style.position = 'fixed';
+    //         additionColElement[0].style.display = 'block';    
+    //     }
+    // }
+
+    if (document.documentElement.scrollTop > 120 || document.body.scrollTop > 120) {
         // navbar:
         // navbarElement.style.padding = "0px 0px 0px 0px";
         // navbarElement.classList.add('fixed-top');
@@ -278,7 +292,7 @@ stars.forEach(item => {
 
 function handleHoverStar(e) {
     i = stars.indexOf(e.target);
-    if (e.target.classList.contains('fa-star-o')) {
+    if (e.target.classList.contains('fa-star-o') && isClick == false) {
         for (i; i >= 0; i--) {
             stars[i].classList.remove('fa-star-o');
             stars[i].classList.add('fa-star');
@@ -304,9 +318,42 @@ function handleHoverOutStar(e) {
 
 function handleClickStar(e) {
     isClick = true;
-    i = stars.indexOf(e.target);
-    for (i; i >= 0; i--) {
+    let target = stars.indexOf(e.target);
+    for (let i = target; i >= 0; i--) {
         stars[i].classList.remove('fa-star-o');
         stars[i].classList.add('fa-star');
     }
+
+    try {
+        // send AJAX request to update rating from user
+        let rating = target + 1;
+        // console.log(userId);
+        // console.log(productId);
+        
+        const xhttp = new XMLHttpRequest();
+        xhttp.onload = () => {
+            console.log(this.responseText);
+        }
+
+        let query = '/rating?userId=' + userId + '&productId=' + productId + '&rating=' + rating;
+        xhttp.open('POST', query, true);
+        xhttp.send();
+
+        // show message success
+        let message = "You voted " + rating.toString() + " stars";
+        swal("Thanks you!", message, "success");
+    }
+    catch(err) {
+        let message = encodeURIComponent('Please login before rating our product!');
+        location.replace("http://localhost:3000/login?message=" + message);
+    }
+}
+
+// Cart button
+let cartBtn = document.querySelector('.cart-btn');
+if (cartBtn != null) {
+    cartBtn.addEventListener('click', e => {
+        e.target.innerHTML = 'Added to cart';
+        e.target.style.backgroundColor = '#198754';
+    });
 }
