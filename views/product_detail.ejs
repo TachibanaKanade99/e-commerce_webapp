@@ -3,17 +3,24 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-	<title> JustShop Website</title>
+	<title> JustShop Website - <%= product.product_name %></title>
 	<%- include('layout/css_links.ejs') %>
 </head>
 
 <body>
     <%-include('./layout/header.ejs');%>
+    <script>
+        var productId = <%= product.id %>
+    </script>
 
     <div class="container">
-        <div class="mt-5">
-            <span class="h3">Product detail</span>
-            <a href= <%= "/products/" + currentCategory + "/" + currentPage %> class="btn btn-primary back-btn mb-2 px-4">Back</a>
+        <div class="row" style="padding-top: 130px;">
+            <div class="col-10 col-md-11">
+                <span class="h3">Product detail</span>
+            </div>
+            <div class="col-2 col-md-1">
+                <a href= <%= "/products/" + currentCategory + "/" + currentPage %> class="btn btn-primary back-btn mb-2 px-4">Back</a>
+            </div>
             <hr class="my-0">
         </div>
 
@@ -34,12 +41,20 @@
                     </div>
                     <div class="py-2">
                         <span class="h4">Rating: </span>
+                        <% const floorRating = Math.round(product.average_rating); %>
+                        <% const remainStars = 5 - floorRating; %>
                         <span class="rating">
-                            <i class="fa fa-star" ></i>
-                            <i class="fa fa-star" ></i>
-                            <i class="fa fa-star" ></i>
-                            <i class="fa fa-star-half-o" ></i>
-                            <i class="fa fa-star-o" ></i>
+                            <% for (let j = 0; j < floorRating; j++) { %>
+                                <i class="fa fa-star" ></i>
+                            <% } %>
+                            
+                            <% for (let h = 0; h < remainStars; h++) { %>
+                                <i class="fa fa-star-o" ></i>
+                            <% } %>
+                        </span>
+
+                        <span class="rating-detail-number">
+                            (<%= product.average_rating %>)
                         </span>
                     </div>
                     <div class="mt-3 product-price">
@@ -54,17 +69,24 @@
                                 <div class="cart">
                                     <i class="fa fa-shopping-cart"></i>
                                 </div> 
-                                <button class="btn btn-success cart-button" onclick="addToCart(<%= '\"' + product.product_name + '\"'%>, 20000)">
+                                <button class="btn btn-success cart-btn" onclick="addToCart(<%= '\"' + product.product_name + '\"'%>, 20000)">
                                     <span class="dot">1</span>
                                     Add to cart 
                                 </button>
                                 <div class="px-1"></div>
-                                <button href="" class="btn btn-primary cart-button">Add to wishlist</button>
+                                <button href="" class="btn btn-primary wishlist-btn">Add to wishlist</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <% if (product.description) { %>
+                <div class="product-description mt-5">
+                    <span class="h4">Product Description: </span>
+                    <span class="product-description-text"> <%= product.description %> </span>
+                </div>
+            <% } %>
             
             <div class="users-rating mt-5">
                 <span class="h4">Rate our product:</span>

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-	<title> JustShop Website</title>
+	<title> JustShop Website - Products</title>
 	<%- include('layout/css_links.ejs') %>
 </head>
 <body>
@@ -19,7 +19,7 @@
 		<small> <%= pages %> </small>
 
 		<div class="row">
-			<div class="col-12 col-md-3">
+			<div class="col-12 col-md-3 fixed-category-tab">
 				<p class="h4 py-2 categories">Categories</p>
 				<ul class="vertical-navbar bg-white">
 					<li>
@@ -49,6 +49,7 @@
 					<% } %>
 				</ul>
 			</div>
+			<!-- <div class="col-12 col-md-3 addition-col"></div> -->
 			<div class="col-12 col-md-8">
 				<h4 class="title">Products</h4>
 
@@ -58,13 +59,17 @@
 							<a class="product-link" href= <%="/products/" + currentCategory + "/" + currentPage + "/" + products[i].id %> >
 								<img class="col-9" src= <%= products[i].image_url %> >
 								<div class="product-name font-weight-bold"> <%= products[i].product_name %> </div>
+								<% const floorRating = Math.round(products[i].average_rating); %>
+								<% const remainStars = 5 - floorRating; %>
 								<div class="rating">
 									<span class="rating">
-										<i class="fa fa-star" ></i>
-										<i class="fa fa-star" ></i>
-										<i class="fa fa-star" ></i>
-										<i class="fa fa-star-half-o" ></i>
-										<i class="fa fa-star-o" ></i>
+										<% for (let j = 0; j < floorRating; j++) { %>
+											<i class="fa fa-star" ></i>
+										<% } %>
+										
+										<% for (let h = 0; h < remainStars; h++) { %>
+											<i class="fa fa-star-o" ></i>
+										<% } %>
 									</span>
 								</div>
 								<p class="price-font">20000đ</p>
