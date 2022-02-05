@@ -27,7 +27,7 @@
 						<% if (currentCategory == 'all') { %>
 							<% all_class_name = 'navbar-active'; %>
 						<% } %>
-						<a id="navbar-link" href= <%= "/products/all/" + currentPage %> class= <%=all_class_name %> >All</a>
+						<a id="navbar-link" href= <%= "/products?category=all&page=" + currentPage %> class= <%=all_class_name %> >All</a>
 					</li>
 
 					<% for (let i = 0; i < categories.length; i++) { %>
@@ -44,7 +44,7 @@
 								<% category_class_name = 'navbar-active'; %>
 							<% } %>
 
-							<a id="navbar-link" href= <%="/products/" + category_name + "/" + currentPage %> class= <%=category_class_name %> > <%= categories[i].name %> </a>
+							<a id="navbar-link" href= <%="/products?category=" + category_name + "&page=" + currentPage %> class= <%=category_class_name %> > <%= categories[i].name %> </a>
 						</li>
 					<% } %>
 				</ul>
@@ -56,7 +56,7 @@
 				<div class="row mb-5">
 					<% for (let i = 0; i < products.length; i++) { %>
 						<div class="col-6 col-md-3 justify-content-center my-5">
-							<a class="product-link" href= <%="/products/" + currentCategory + "/" + currentPage + "/" + products[i].id %> >
+							<a class="product-link" href= <%="/products/" + products[i].id + "?category=" + currentCategory + "&page=" + currentPage %> >
 								<img class="col-9" src= <%= products[i].image_url %> >
 								<div class="product-name font-weight-bold"> <%= products[i].product_name %> </div>
 								<% const floorRating = Math.round(products[i].average_rating); %>
@@ -84,7 +84,7 @@
 		<nav aria-label="Page navigation example">
 			<ul class="pagination pagination-lg justify-content-center">
 				<li class="page-item">
-					<a class="page-link" href= <%="/products/" + currentCategory + "/1" %> >First</a>
+					<a class="page-link" href= <%="/products?category=" + currentCategory + "&page=1" %> >First</a>
 				</li>
 
 				<% if (currentPage == 1) { %>
@@ -97,7 +97,7 @@
 				<% } else { %>
 					<li class="page-item">
 						<!-- <a class="page-link" href= <%="/products/" + currentCategory + "/" + parseInt(currentPage-1) %> >Previous</a> -->
-						<a class="page-link" aria-label="Previous" href= <%="/products/" + currentCategory + "/" + parseInt(currentPage-1) %> >
+						<a class="page-link" aria-label="Previous" href= <%="/products?category=" + currentCategory + "&page=" + parseInt(currentPage-1) %> >
 							<span aria-hidden="true">&laquo;</span>
 						</a>
 					</li>
@@ -114,11 +114,11 @@
 				<% for (i; i <= Number(currentPage) + 2 && i <= pages; i++) { %>
 					<% if (i == currentPage) { %>
 						<li class="page-item navbar-active">
-							<a class="page-link" href= <%= "/products/" + currentCategory + "/" + i %> > <%= i %> </a>
+							<a class="page-link" href= <%= "/products?category=" + currentCategory + "&page=" + i %> > <%= i %> </a>
 						</li>
 					<% } else { %>
 						<li class="page-item">
-							<a class="page-link" href= <%= "/products/" + currentCategory + "/" + i %> > <%= i %> </a>
+							<a class="page-link" href= <%= "/products?category=" + currentCategory + "&page=" + i %> > <%= i %> </a>
 						</li>
 					<% } %>
 
@@ -130,13 +130,13 @@
 				<% } %>
 
 				<li class="page-item">
-					<!-- <a class="page-link" href= <%= "/products/" + currentCategory + "/" + parseInt(currentPage+1) %> >Next</a> -->
-					<a class="page-link" aria-label="Next" href= <%= "/products/" + currentCategory + "/" + parseInt(currentPage+1) %> >
+					<!-- <a class="page-link" href= <%= "/products?category" + currentCategory + "&page=" + parseInt(currentPage+1) %> >Next</a> -->
+					<a class="page-link" aria-label="Next" href= <%= "/products?category=" + currentCategory + "&page=" + parseInt(currentPage+1) %> >
 						<span aria-hidden="true">&raquo;</span>
 					</a>
 				</li>
 				<li class="page-item">
-					<a class="page-link" href= <%= "/products/" + currentCategory + "/" + pages %> >Last</a>
+					<a class="page-link" href= <%= "/products?category" + currentCategory + "&page=" + pages %> >Last</a>
 				</li>
 			</ul>
 		</nav>

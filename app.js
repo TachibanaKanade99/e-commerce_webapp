@@ -61,7 +61,7 @@ app.use(passport.session());
 app.use((req, res, next) => {
     res.locals.currentUser = req.user;
     next();
-})
+});
 
 // include custom modules:
 
@@ -81,11 +81,11 @@ app.get('/', (req, res) => {
 });
 
 // Product page:
-app.get('/products/:category/:page', async (req, res) => {
+app.get('/products', async (req, res) => {
     console.log('hello from product page');
 
-    let category = req.params.category;
-    let page = req.params.page;
+    let category = req.query.category;
+    let page = req.query.page;
     let productsPerPage = 12;
     let categories = await products.getCategories();
     let products_result = await products.getProductsByCategory(category, page, productsPerPage);
@@ -99,21 +99,17 @@ app.get('/products/:category/:page', async (req, res) => {
     });
 });
 
-app.get('/products', (req, res) => {
-    res.redirect('/products/all/1');
-});
-
 // Product detail page:
-app.get('/products/:category/:page/:productID', async(req, res) => {
+app.get('/products/:productID', async(req, res) => {
     console.log('hello from product detail page');
 
-    let category = req.params.category
-    let page = req.params.page;
     let productID = req.params.productID;
+    let category = req.query.category;
+    let page = req.query.page;
     let product = await products.getProductByProductID(productID);
     res.render('product_detail', {
         product: product,
-        currentCategory: category, 
+        currentCategory: category,
         currentPage: page
     });
 });
